@@ -58,7 +58,7 @@ export class Product {
         ()=> ProductImage,
         productImage =>productImage.product,
         {
-            cascade: true,
+            cascade: ["insert","update"],
             eager:true
         }
     )

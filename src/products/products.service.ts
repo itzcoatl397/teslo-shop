@@ -139,13 +139,36 @@ export class ProductsService {
   }
 
   async remove(id: string) {
-    const product = await this.findOne(id);
-    await this.productRepository.remove(product);
-  }
 
+    await  this.findOne(id);
+    try {
+
+      await this.productRepository.delete(id);
+    }catch (error){
+
+      this.handleException(error);
+    }
+
+  }
+async  deleteAllProducts(){
+
+    const query = this.productRepository.createQueryBuilder('product');
+    try {
+      return await  query.delete().execute()
+    }catch (err){
+      this.handleException(err)
+    }
+}
   private handleException(error: any) {
     if (error.code === '23505') {
       throw new BadRequestException(error.detail);
+    }
+
+    if (error.code === "23503"){
+      throw new BadRequestException(
+        'The product you are trying to delete has related images',
+      );
+
     }
 
     this.logger.error(error);
