@@ -27,6 +27,7 @@ import * as process from "node:process";
       SeedModule,
       FilesModule,
   ],
+ \\
   controllers: [],
   providers: [],
 })
